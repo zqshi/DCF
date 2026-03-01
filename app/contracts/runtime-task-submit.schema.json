@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dcf.runtime.task.submit.v1",
+  "title": "Runtime Task Submit v1",
+  "type": "object",
+  "required": [
+    "goal"
+  ],
+  "properties": {
+    "taskId": { "type": "string", "minLength": 1 },
+    "employeeId": { "type": [ "string", "null" ] },
+    "conversationId": { "type": [ "string", "null" ] },
+    "goal": { "type": "string", "minLength": 1 },
+    "riskLevel": { "type": "string", "pattern": "^L[1-4]$" },
+    "llmConfig": {
+      "type": "object",
+      "properties": {
+        "model": { "type": [ "string", "null" ] },
+        "thinkingLevel": { "type": "string" },
+        "toolPolicy": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "agentId": { "type": [ "string", "null" ] },
+    "sessionKey": { "type": [ "string", "null" ] },
+    "policyId": { "type": [ "string", "null" ] },
+    "extraSystemPrompt": { "type": [ "string", "null" ] },
+    "toolScope": {
+      "type": "array",
+      "maxItems": 20,
+      "items": { "type": "string" }
+    },
+    "attachments": {
+      "type": "array",
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "enum": ["image"] },
+          "name": { "type": ["string", "null"], "maxLength": 120 },
+          "mimeType": { "type": "string", "pattern": "^image\\/" },
+          "content": { "type": "string", "minLength": 1 }
+        },
+        "required": ["type", "mimeType", "content"],
+        "additionalProperties": true
+      }
+    },
+    "task": { "type": "object" },
+    "parentEmployee": { "type": "object" }
+  },
+  "additionalProperties": true
+}

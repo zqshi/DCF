@@ -1,0 +1,42 @@
+{
+  "name": "dcf-bootstrap-demo",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Digital Employee OS bootstrap demo with DDD-lite, TDD and pluggable persistence",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "DB_DRIVER=${DB_DRIVER:-sqlite} SQLITE_PATH=${SQLITE_PATH:-./data/dcf.sqlite} node src/server.js",
+    "test": "DB_DRIVER=memory node --test",
+    "lint": "node scripts/lint.js",
+    "verify:layers": "node scripts/verify-layer-boundaries.js",
+    "drill:p1-rollback": "node scripts/drill-p1-rollback.js",
+    "verify:prod-gates": "node scripts/verify-prod-gates.js",
+    "verify:perf-smoke": "node scripts/verify-performance-smoke.js",
+    "verify:release": "node scripts/verify-release-readiness.js",
+    "verify:openclaw-contract": "node scripts/verify-openclaw-contract.js",
+    "verify:browser-capability": "bash ./scripts/verify-browser-capability.sh",
+    "verify:openclaw-alignment": "node scripts/verify-openclaw-alignment.js",
+    "verify:composite-consistency": "node scripts/verify-composite-consistency.js",
+    "policy:apply-runtime": "node scripts/apply-runtime-permission-baseline.js",
+    "start:sqlite": "DB_DRIVER=sqlite node src/server.js",
+    "start:postgres": "DB_DRIVER=postgres node src/server.js",
+    "start:selfhosted": "EXECUTION_ENGINE=self_hosted DB_DRIVER=sqlite node src/server.js",
+    "start:openclaw": "EXECUTION_ENGINE=openclaw DB_DRIVER=sqlite node src/server.js",
+    "start:stack": "./scripts/start-openclaw-stack.sh",
+    "smoke:openclaw": "./scripts/openclaw-smoke.sh",
+    "stop:stack": "./scripts/stop-openclaw-stack.sh",
+    "bootstrap:prod-auth": "node scripts/bootstrap-production-auth.js",
+    "auth:hash": "node scripts/hash-admin-password.js",
+    "audit:verify-ledger": "node scripts/verify-audit-ledger.js"
+  },
+  "optionalDependencies": {
+    "better-sqlite3": "^11.8.1",
+    "pg": "^8.13.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "unzipper": "^0.12.3"
+  }
+}

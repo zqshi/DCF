@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "oss_evaluation_result.v1",
+  "required": [
+    "schemaVersion",
+    "caseId",
+    "generatedAt",
+    "query",
+    "dimensions",
+    "candidateCount",
+    "consistency",
+    "hardGate",
+    "topCandidate"
+  ],
+  "dimensions": [
+    "technicalMaturity",
+    "communityActivity",
+    "codeQuality",
+    "documentation",
+    "licenseCompliance",
+    "security",
+    "performance",
+    "maintainability"
+  ]
+}

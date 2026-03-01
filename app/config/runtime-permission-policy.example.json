@@ -1,0 +1,128 @@
+{
+  "policyVersion": "2026-02-24",
+  "mode": "default_allow_except_sensitive",
+  "riskPolicy": {
+    "L1": {
+      "requiredApprovals": 0,
+      "requiredAnyRoles": [],
+      "distinctRoles": false
+    },
+    "L2": {
+      "requiredApprovals": 0,
+      "requiredAnyRoles": [],
+      "distinctRoles": false
+    },
+    "L3": {
+      "requiredApprovals": 0,
+      "requiredAnyRoles": [],
+      "distinctRoles": false
+    },
+    "L4": {
+      "requiredApprovals": 2,
+      "requiredAnyRoles": [
+        "auditor",
+        "super_admin"
+      ],
+      "distinctRoles": true
+    }
+  },
+  "sensitiveOperationGroups": {
+    "system_change": {
+      "enabled": true,
+      "approvalRequired": true,
+      "examples": [
+        "change_runtime_policy",
+        "change_system_service",
+        "change_security_config"
+      ]
+    },
+    "secret_or_privacy": {
+      "enabled": true,
+      "approvalRequired": true,
+      "examples": [
+        "read_secret",
+        "export_secret",
+        "send_sensitive_data"
+      ]
+    },
+    "production_write": {
+      "enabled": true,
+      "approvalRequired": true,
+      "examples": [
+        "db_write_prod",
+        "deploy_prod",
+        "change_prod_config"
+      ]
+    },
+    "destructive_irreversible": {
+      "enabled": true,
+      "approvalRequired": true,
+      "examples": [
+        "bulk_delete",
+        "reset_state",
+        "overwrite_without_compensation"
+      ]
+    }
+  },
+  "runtimeAllowList": {
+    "tools": [
+      "read",
+      "write",
+      "search",
+      "test"
+    ],
+    "deniedTools": [
+      "browser",
+      "cron",
+      "nodes",
+      "canvas",
+      "gateway",
+      "discord",
+      "slack",
+      "telegram",
+      "whatsapp"
+    ],
+    "allowedHosts": [
+      "127.0.0.1",
+      "localhost"
+    ]
+  },
+  "audit": {
+    "requiredFields": [
+      "trace_id",
+      "task_id",
+      "employee_id"
+    ],
+    "recommendedFields": [
+      "risk_level",
+      "action",
+      "resource",
+      "result",
+      "operator",
+      "timestamp"
+    ],
+    "requiredEvents": [
+      "task.created",
+      "task.approval.required",
+      "task.approved",
+      "permission.requested",
+      "permission.granted",
+      "task.failed",
+      "task.rollback"
+    ]
+  },
+  "circuitBreaker": {
+    "enabled": true,
+    "triggers": [
+      "p1_risk_event",
+      "permission_abuse_detected",
+      "sensitive_failures_spike"
+    ],
+    "actions": [
+      "stop_high_risk_execution",
+      "degrade_to_read_only",
+      "pause_external_write",
+      "require_manual_takeover"
+    ]
+  }
+}

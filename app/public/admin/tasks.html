@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>任务台账</title>
+    <meta http-equiv="refresh" content="0; url=/admin/tasks-runtime.html" />
+    <link rel="stylesheet" href="/admin/layout.css" />
+  </head>
+  <body data-required-permission="admin.tasks.page.overview.read">
+    <main class="content">
+      <section class="card">
+        <h3>正在跳转到任务运行态...</h3>
+        <p class="toolbar-note">若未自动跳转，请点击下方链接。</p>
+        <p><a href="/admin/tasks-runtime.html">前往任务运行态</a></p>
+      </section>
+    </main>
+    <script>
+      window.location.replace('/admin/tasks-runtime.html');
+    </script>
+  </body>
+</html>

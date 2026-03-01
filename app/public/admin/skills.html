@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>技能管理</title>
+    <link rel="stylesheet" href="/admin/layout.css" />
+  </head>
+  <body data-required-permission="admin.skills.page.management.read">
+    <div class="admin-shell">
+      <aside class="sidebar">
+        <h2>管理后台</h2>
+        <a href="/admin/index.html">总览</a>
+        <a href="/admin/runtime.html">运行诊断</a>
+        <a href="/admin/employees.html">员工管理</a>
+        <a class="active" href="/admin/skills.html">技能管理</a>
+        <a href="/admin/tasks.html">任务台账</a>
+        <a href="/admin/logs.html">行为日志</a>
+        <a href="/admin/oss.html">开源检索</a>
+        <a href="/admin/auth-members.html">成员管理</a>
+        <a href="/front.html">用户工作台</a>
+      </aside>
+      <main class="content">
+        <section class="page-head">
+          <h1 class="page-title">技能管理</h1>
+          <div class="stat-strip">
+            <div class="stat-item">
+              <div class="stat-label">技能总量</div>
+              <div id="skillCount" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">通用技能</div>
+              <div id="generalCount" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">领域技能</div>
+              <div id="domainCount" class="stat-value">0</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="toolbar">
+            <div style="display:flex; gap:8px;">
+              <button type="button" id="exportBtn" data-required-permission="admin.skills.read">导出</button>
+              <button type="button" id="importBtn" class="primary" data-required-permission="admin.skills.write">导入</button>
+              <button id="openSkillPolicyDrawerBtn" type="button">技能沉淀策略</button>
+              <input type="file" id="importFile" accept="application/json,.json,application/zip,.zip" class="hidden" />
+            </div>
+          </div>
+          <div class="toolbar filter-toolbar">
+            <div class="toolbar-group">
+              <label for="filterSkillName">技能名称</label>
+              <input class="admin-input" id="filterSkillName" type="text" placeholder="按技能名称搜索" />
+            </div>
+            <div class="toolbar-group">
+              <label for="filterSkillSource">技能来源</label>
+              <select class="admin-select" id="filterSkillSource">
+                <option value="">全部来源</option>
+              </select>
+            </div>
+            <div class="toolbar-group">
+              <label for="filterSkillEmployee">数字员工</label>
+              <select class="admin-select" id="filterSkillEmployee">
+                <option value="">全部数字员工</option>
+              </select>
+            </div>
+          </div>
+          <div id="importStatus" class="toolbar-note" style="margin-bottom:10px;"></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>名称</th>
+                  <th>类型</th>
+                  <th>领域</th>
+                  <th>来源</th>
+                  <th>创建时间</th>
+                </tr>
+              </thead>
+              <tbody id="rows">
+                <tr><td colspan="5" class="empty">加载中...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+    <aside id="skillDetailDrawer" class="employee-drawer skill-detail-drawer hidden" aria-hidden="true">
+      <div class="employee-drawer-head">
+        <h3 id="skillDrawerTitle">技能详情</h3>
+        <button id="closeSkillDrawer" type="button">关闭</button>
+      </div>
+      <div id="skillDrawerBody" class="employee-drawer-body">
+        <div class="empty">请选择技能查看详情</div>
+      </div>
+    </aside>
+    <div id="skillDrawerMask" class="employee-drawer-mask hidden" aria-hidden="true"></div>
+    <aside id="skillPolicyDrawer" class="employee-drawer skill-detail-drawer hidden" aria-hidden="true">
+      <div class="employee-drawer-head">
+        <h3>技能沉淀策略</h3>
+        <button id="closeSkillPolicyDrawer" type="button">关闭</button>
+      </div>
+      <div class="employee-drawer-body skill-policy-body">
+        <div id="skillPolicyRulesSection" class="skill-detail-card">
+          <h4>规则配置</h4>
+          <div id="skillPolicyRuleSummary" class="toolbar-note">加载中...</div>
+          <ul id="skillPolicyRuleList" class="section-note skill-policy-rule-list">
+            <li>加载中...</li>
+          </ul>
+        </div>
+        <div id="skillPolicyPreviewSection" class="skill-detail-card">
+          <h4>生效预览</h4>
+          <div id="skillPolicyEffectivePreview" class="toolbar-note">加载中...</div>
+        </div>
+        <div class="policy-grid">
+          <label for="skillPolicyModeSelect">策略方式</label>
+          <select class="admin-select" id="skillPolicyModeSelect">
+            <option value="hybrid">平衡（推荐：先AI再规则）</option>
+            <option value="model_driven">AI优先（更灵活）</option>
+            <option value="rules">规则优先（更稳）</option>
+          </select>
+          <label id="skillPolicyMinConfidenceLabel" for="skillPolicyMinConfidence">AI把握度阈值 (0-1)</label>
+          <input id="skillPolicyMinConfidence" type="number" min="0" max="1" step="0.01" />
+          <label id="skillPolicyMinRepeatedLabel" for="skillPolicyMinRepeated">同类任务历史成功达到 N 次后，才允许自动沉淀</label>
+          <input id="skillPolicyMinRepeated" type="number" min="1" step="1" />
+          <label id="skillPolicyFallbackLabel" for="skillPolicyFallback">AI暂不可用时，是否启用规则兜底</label>
+          <select class="admin-select" id="skillPolicyFallback">
+            <option value="true">开启</option>
+            <option value="false">关闭</option>
+          </select>
+        </div>
+        <div id="skillPolicyOverridesSection" class="skill-detail-card">
+          <div class="skill-policy-overrides-head">
+            <h4>分层覆盖策略</h4>
+            <button id="addSkillPolicyOverrideBtn" type="button">新增覆盖规则</button>
+          </div>
+          <div class="toolbar-note skill-policy-overrides-note">按员工/部门/角色等范围覆盖默认策略。至少填写一个范围字段才会生效。</div>
+          <div id="skillPolicyOverridesList" class="skill-policy-overrides-list"></div>
+          <details class="skill-policy-overrides-details">
+            <summary>高级模式：查看 JSON（可选）</summary>
+            <textarea id="skillPolicyOverridesJson" class="policy-editor policy-editor-sm mono" readonly></textarea>
+          </details>
+        </div>
+        <p id="skillPolicyModeExplain" class="section-note">策略说明：-</p>
+        <p id="skillPolicyHint" class="section-note policy-hint">建议：先用默认值；若沉淀过多可调高“AI把握度阈值”，若沉淀过少可适当调低。</p>
+        <div class="policy-actions">
+          <button id="saveSkillPolicyBtn" type="button" data-required-permission="admin.runtime.write">保存沉淀策略</button>
+        </div>
+        <p id="skillPolicyDiff" class="section-note"></p>
+      </div>
+    </aside>
+    <div id="skillPolicyDrawerMask" class="employee-drawer-mask hidden" aria-hidden="true"></div>
+    <div id="skillPolicyToast" class="admin-toast hidden" role="status" aria-live="polite"></div>
+    <script src="/admin/auth.js"></script>
+    <script src="/admin/skills.js"></script>
+  </body>
+</html>

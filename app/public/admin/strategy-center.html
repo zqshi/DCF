@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>治理中心</title>
+    <link rel="stylesheet" href="/admin/layout.css" />
+  </head>
+  <body data-required-permission="admin.runtime.write" data-hide-content-topbar="1">
+    <div class="admin-shell">
+      <aside class="sidebar">
+        <h2>管理后台</h2>
+        <a href="/front.html">用户工作台</a>
+      </aside>
+      <main class="content">
+        <section class="page-head">
+          <h1 class="page-title">治理中心</h1>
+          <p class="page-subtitle">仅面向平台治理管理员：维护运行规则与基准 System Prompt，确保安全、稳定、可审计。</p>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <h3>运行治理策略</h3>
+            <p class="section-note">策略调整会即时影响后续新任务和新员工默认治理行为。</p>
+          </div>
+          <div class="policy-grid">
+            <label>最大循环步数<input id="maxLoopSteps" class="admin-input" type="number" min="1" max="20" /></label>
+            <label>任务超时(ms)<input id="maxTaskRuntimeMs" class="admin-input" type="number" min="1000" /></label>
+            <label>重试上限<input id="retryLimit" class="admin-input" type="number" min="0" max="10" /></label>
+            <label>重试回退(ms)<input id="retryBackoffMs" class="admin-input" type="number" min="0" /></label>
+          </div>
+          <div class="governance-switch-grid">
+            <label class="switch-card">
+              <input id="promptPublishRequiresApproval" type="checkbox" />
+              <span class="switch-main">
+                <span class="switch-title">提示词发布需审批</span>
+                <span class="switch-desc">开启后，发布的新版本进入待审批状态。</span>
+              </span>
+            </label>
+            <label class="switch-card">
+              <input id="blockOnHighRiskWithoutApproval" type="checkbox" />
+              <span class="switch-main">
+                <span class="switch-title">高风险无审批时阻断</span>
+                <span class="switch-desc">开启后，高风险任务若无审批链将直接阻断。</span>
+              </span>
+            </label>
+          </div>
+          <p id="governanceSwitchHint" class="toolbar-note"></p>
+          <div class="toolbar">
+            <button id="saveStrategyBtn">保存策略</button>
+            <span id="strategyStatusText">加载中...</span>
+          </div>
+        </section>
+
+        <section class="card" id="prompt-center">
+          <div class="section-head">
+            <h3>平台基准 System Prompt</h3>
+            <p class="section-note">该提示词作为数字员工创建后的最高行为基准。</p>
+          </div>
+          <div class="toolbar prompt-status-row">
+            <span id="promptStatusText">加载中...</span>
+          </div>
+          <label class="prompt-editor">
+            <textarea id="platformContent" rows="18"></textarea>
+          </label>
+          <div class="toolbar prompt-actions-row">
+            <button id="savePromptCenterBtn">保存基准 Prompt</button>
+            <span id="activeVersion" class="section-note">active: -</span>
+          </div>
+          <div class="section-head" style="margin-top: 14px;">
+            <h4>Prompt 回滚设置</h4>
+            <p class="section-note">从已发布版本中快速回滚，恢复到稳定状态。</p>
+          </div>
+          <div class="toolbar" style="margin-top: 8px;">
+            <span id="promptRollbackStatus" class="section-note"></span>
+          </div>
+          <div class="table-wrap" style="margin-top: 8px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>版本ID</th>
+                  <th>名称</th>
+                  <th>状态</th>
+                  <th>来源</th>
+                  <th>创建时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="promptVersionRows">
+                <tr><td colspan="6" class="empty">加载中...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div id="strategyToast" class="admin-toast hidden" role="status" aria-live="polite"></div>
+    <script src="/admin/auth.js"></script>
+    <script src="/admin/strategy-center.js"></script>
+  </body>
+</html>

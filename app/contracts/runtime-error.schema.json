@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dcf.runtime.error.v1",
+  "title": "Runtime Error v1",
+  "type": "object",
+  "properties": {
+    "error": {
+      "oneOf": [
+        { "type": "string", "minLength": 1 },
+        {
+          "type": "object",
+          "required": [ "message" ],
+          "properties": {
+            "message": { "type": "string", "minLength": 1 },
+            "code": { "type": "string" },
+            "severity": { "type": "string", "enum": [ "P1", "P2" ] },
+            "details": {}
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "code": { "type": "string" },
+    "expected": { "type": [ "string", "null" ] },
+    "actual": { "type": [ "string", "null" ] }
+  },
+  "additionalProperties": true
+}
+

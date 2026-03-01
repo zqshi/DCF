@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>员工成长</title>
+    <link rel="stylesheet" href="/admin/layout.css" />
+  </head>
+  <body data-required-permission="admin.employees.page.growth.read">
+    <div class="admin-shell">
+      <aside class="sidebar">
+        <h2>管理后台</h2>
+        <a href="/front.html">用户工作台</a>
+      </aside>
+      <main class="content">
+        <section class="page-head">
+          <h1 class="page-title">员工成长</h1>
+          <p class="page-subtitle">聚焦能力、知识、技能与子 Agent 增长，支撑成长性运营。</p>
+          <div class="stat-strip">
+            <div class="stat-item">
+              <div class="stat-label">总能力数</div>
+              <div id="capabilityTotal" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">总知识数</div>
+              <div id="knowledgeTotal" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">总关联技能</div>
+              <div id="skillTotal" class="stat-value">0</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>工号</th>
+                  <th>员工</th>
+                  <th>能力数</th>
+                  <th>知识数</th>
+                  <th>关联技能</th>
+                  <th>子Agent总数</th>
+                  <th>活跃子Agent</th>
+                </tr>
+              </thead>
+              <tbody id="rows">
+                <tr><td colspan="7" class="empty">加载中...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="/admin/auth.js"></script>
+    <script src="/admin/employees-growth.js"></script>
+  </body>
+</html>

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>开源检索与决策</title>
+    <link rel="stylesheet" href="/admin/layout.css" />
+  </head>
+  <body data-required-permission="admin.oss.page.search.read">
+    <div class="admin-shell">
+      <aside class="sidebar">
+        <h2>管理后台</h2>
+        <a href="/admin/index.html">总览</a>
+        <a href="/admin/runtime.html">运行诊断</a>
+        <a href="/admin/employees.html">员工管理</a>
+        <a href="/admin/skills.html">技能管理</a>
+        <a href="/admin/tasks.html">任务台账</a>
+        <a href="/admin/logs.html">行为日志</a>
+        <a class="active" href="/admin/oss.html">开源检索</a>
+        <a href="/admin/auth-members.html">成员管理</a>
+        <a href="/front.html">用户工作台</a>
+      </aside>
+      <main class="content">
+        <section class="page-head">
+          <h1 class="page-title">开源检索与决策</h1>
+          <p class="page-subtitle">数字员工在执行任务中识别能力缺口后，会自动检索开源方案并给出建议。请选择记录查看并确认是否继续。</p>
+          <div class="stat-strip">
+            <div class="stat-item">
+              <div class="stat-label">案例总数</div>
+              <div id="caseCount" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">待审批</div>
+              <div id="pendingCount" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">已完成</div>
+              <div id="completedCount" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">最近更新时间</div>
+              <div id="latestCaseTime" class="stat-value">-</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h3 style="margin-top:0;">待确认事项列表</h3>
+          <div class="toolbar-note" style="margin-bottom:8px;">点击任意记录可查看“为什么触发”“建议是什么”“风险点在哪里”。</div>
+          <div class="table-wrap" style="margin-bottom:10px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>事项编号</th>
+                  <th>任务编号</th>
+                  <th>问题类型</th>
+                  <th>当前进度</th>
+                  <th>建议动作</th>
+                  <th>最近更新时间</th>
+                </tr>
+              </thead>
+              <tbody id="caseRows">
+                <tr><td colspan="6" class="empty">加载中...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="legacyFindingsCard" class="card" style="margin-top:12px;display:none;">
+          <h3 style="margin-top:0;">兼容检索记录（历史）</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>任务</th>
+                  <th>员工</th>
+                  <th>查询</th>
+                  <th>候选Top1</th>
+                  <th>时间</th>
+                </tr>
+              </thead>
+              <tbody id="findingRows">
+                <tr><td colspan="5" class="empty">加载中...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="/admin/auth.js"></script>
+    <script src="/admin/oss.js"></script>
+  </body>
+</html>

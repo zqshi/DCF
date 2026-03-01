@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>后台操作日志</title>
+    <link rel="stylesheet" href="/admin/layout.css" />
+  </head>
+  <body data-required-permission="admin.logs.page.admin.read">
+    <div class="admin-shell">
+      <aside class="sidebar">
+        <h2>管理后台</h2>
+        <a href="/admin/index.html">总览</a>
+        <a href="/admin/runtime.html">运行诊断</a>
+        <a href="/admin/employees.html">员工管理</a>
+        <a href="/admin/skills.html">技能管理</a>
+        <a href="/admin/tasks.html">任务台账</a>
+        <a class="active" href="/admin/logs-admin.html">后台操作日志</a>
+        <a href="/admin/oss.html">开源检索</a>
+        <a href="/admin/auth-members.html">成员管理</a>
+        <a href="/front.html">用户工作台</a>
+      </aside>
+      <main class="content">
+        <section class="page-head">
+          <h1 class="page-title">后台操作日志</h1>
+          <p class="page-subtitle">记录账号、权限、审计与后台维护操作，支撑合规审计与责任追踪。</p>
+          <div class="stat-strip">
+            <div class="stat-item">
+              <div class="stat-label">当前页展示条数</div>
+              <div id="logCount" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">最新时间</div>
+              <div id="latestLogTime" class="stat-value">-</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="toolbar filter-toolbar">
+            <div class="toolbar-group">
+              <label for="logModuleFilter">模块</label>
+              <select class="admin-select" id="logModuleFilter">
+                <option value="all">全部</option>
+              </select>
+            </div>
+            <div class="toolbar-group">
+              <label for="logPageFilter">页面</label>
+              <select class="admin-select" id="logPageFilter">
+                <option value="all">全部</option>
+              </select>
+            </div>
+            <div class="toolbar-group">
+              <label for="logOperationFilter">操作</label>
+              <select class="admin-select" id="logOperationFilter">
+                <option value="all">全部</option>
+              </select>
+            </div>
+          </div>
+          <p class="toolbar-note">模块按一级菜单、页面按二级菜单、操作按实际行为记录展示；原始 JSON 可在详情中展开查看。</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>时间</th>
+                  <th>业务模块</th>
+                  <th>行为摘要</th>
+                  <th>关联对象</th>
+                  <th>详情</th>
+                </tr>
+              </thead>
+              <tbody id="rows">
+                <tr><td colspan="5" class="empty">加载中...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="/admin/auth.js"></script>
+    <script>
+      document.body.setAttribute('data-log-scope', 'admin');
+    </script>
+    <script src="/admin/logs.js"></script>
+  </body>
+</html>

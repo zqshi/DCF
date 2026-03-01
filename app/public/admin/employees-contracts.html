@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>岗位合同</title>
+    <link rel="stylesheet" href="/admin/layout.css" />
+  </head>
+  <body data-required-permission="admin.employees.page.contracts.read">
+    <div class="admin-shell">
+      <aside class="sidebar">
+        <h2>管理后台</h2>
+        <a href="/front.html">用户工作台</a>
+      </aside>
+      <main class="content">
+        <section class="page-head">
+          <h1 class="page-title">岗位合同</h1>
+          <p class="page-subtitle">聚焦员工岗位边界、审批策略与风险约束，避免职责漂移。</p>
+          <div class="stat-strip">
+            <div class="stat-item">
+              <div class="stat-label">员工总数</div>
+              <div id="employeeCount" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">已配置职责范围</div>
+              <div id="allowConfiguredCount" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">L4审批策略</div>
+              <div id="l4PolicyCount" class="stat-value">0</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>工号</th>
+                  <th>员工</th>
+                  <th>部门/岗位</th>
+                  <th>风险等级</th>
+                  <th>Allow</th>
+                  <th>Deny</th>
+                  <th>L4审批人数</th>
+                  <th>L4审批角色</th>
+                </tr>
+              </thead>
+              <tbody id="rows">
+                <tr><td colspan="8" class="empty">加载中...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="/admin/auth.js"></script>
+    <script src="/admin/employees-contracts.js"></script>
+  </body>
+</html>

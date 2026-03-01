@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>任务详情</title>
+    <link rel="stylesheet" href="/admin/layout.css" />
+  </head>
+  <body data-required-permission="admin.tasks.page.overview.read">
+    <div class="admin-shell">
+      <aside class="sidebar">
+        <h2>管理后台</h2>
+        <a href="/admin/tasks-runtime.html">任务运行态</a>
+        <a href="/admin/tasks-governance.html">任务治理态</a>
+        <a href="/front.html">用户工作台</a>
+      </aside>
+      <main class="content">
+        <section class="page-head">
+          <h1 class="page-title">任务详情</h1>
+          <p class="page-subtitle">查看完整执行链与治理链，支持回滚报告与回滚包导出。</p>
+          <div class="stat-strip">
+            <div class="stat-item">
+              <div class="stat-label">任务ID</div>
+              <div id="taskIdStat" class="stat-value mono">-</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">当前状态</div>
+              <div id="taskStatusStat" class="stat-value">-</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">风险等级</div>
+              <div id="riskLevelStat" class="stat-value">-</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="toolbar">
+            <div class="toolbar-note">审计主键与运行时快照</div>
+            <div class="command-hints">
+              <button id="downloadRollbackReportBtn" type="button">下载回滚报告</button>
+              <button id="downloadRollbackPackageBtn" type="button">下载回滚包</button>
+            </div>
+          </div>
+          <div id="summaryGrid" class="insight-grid"></div>
+        </section>
+
+        <section class="card">
+          <h3>状态机时间线</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>时间</th>
+                  <th>事件</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody id="timelineRows">
+                <tr><td colspan="3" class="empty">加载中...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card">
+          <h3>执行事件流（Runtime）</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>时间</th>
+                  <th>事件类型</th>
+                  <th>事件ID</th>
+                </tr>
+              </thead>
+              <tbody id="runtimeRows">
+                <tr><td colspan="3" class="empty">加载中...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card">
+          <h3>审批与补偿</h3>
+          <div class="insight-grid">
+            <div class="detail-section">
+              <h4>审批链</h4>
+              <div id="approvalWrap" class="table-wrap"></div>
+            </div>
+            <div class="detail-section">
+              <h4>补偿状态</h4>
+              <pre id="compensationPre" class="mono">-</pre>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="/admin/auth.js"></script>
+    <script src="/admin/task-detail.js"></script>
+  </body>
+</html>

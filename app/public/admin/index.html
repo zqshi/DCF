@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>后台总览</title>
+    <link rel="stylesheet" href="/admin/layout.css" />
+  </head>
+  <body data-required-permission="admin.runtime.page.platform-overview.read" data-hide-content-topbar="1">
+    <div class="admin-shell">
+      <aside class="sidebar">
+        <h2>管理后台</h2>
+        <a class="active" href="/admin/index.html">总览</a>
+        <a href="/admin/runtime.html">运行诊断</a>
+        <a href="/admin/strategy-center.html">治理中心</a>
+        <a href="/admin/employees.html">员工管理</a>
+        <a href="/admin/skills.html">技能管理</a>
+        <a href="/admin/tasks.html">任务台账</a>
+        <a href="/admin/logs.html">行为日志</a>
+        <a href="/admin/oss.html">开源检索</a>
+        <a href="/admin/auth-members.html">成员管理</a>
+        <a href="/front.html">用户工作台</a>
+      </aside>
+      <main class="content">
+        <section class="page-head">
+          <div class="page-head-layout">
+            <div>
+              <h1 class="page-title">后台总览</h1>
+              <p class="page-subtitle">聚焦平台对业务的实际产出：任务交付、员工协作、能力沉淀与风险治理。</p>
+              <div class="stat-strip">
+                <div class="stat-item">
+                  <div class="stat-label">数字员工</div>
+                  <div id="employeesTotal" class="stat-value">0</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">任务总量</div>
+                  <div id="tasksTotal" class="stat-value">0</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">交付成功率</div>
+                  <div id="successRate" class="stat-value">0%</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">审批待处理</div>
+                  <div id="approvalPendingTotal" class="stat-value">0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <h3>平台运营全景</h3>
+          </div>
+          <div class="panel-grid-2">
+            <div class="list-panel">
+              <div id="summary" class="overview-summary">加载中...</div>
+              <div class="overview-kpis">
+                <div><span>进行中任务</span><strong id="tasksInProgress">0</strong></div>
+                <div><span>补偿待处理</span><strong id="compensationPending">0</strong></div>
+                <div><span>回滚任务</span><strong id="rollbackCount">0</strong></div>
+                <div><span>P1 事件</span><strong id="p1IncidentCount">0</strong></div>
+              </div>
+            </div>
+            <div class="list-panel">
+              <div id="bootstrapHeadline" class="overview-summary">加载中...</div>
+              <div class="overview-list" id="bootstrapChecklist"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="overview-grid">
+          <article class="card">
+            <h3>风险与稳定</h3>
+            <div class="overview-list" id="qualityList"></div>
+          </article>
+
+          <article class="card">
+            <h3>治理态势</h3>
+            <div class="overview-list" id="focusList"></div>
+          </article>
+        </section>
+      </main>
+    </div>
+    <script src="/admin/auth.js"></script>
+    <script src="/admin/index.js"></script>
+  </body>
+</html>

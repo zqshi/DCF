@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>工具资产</title>
+    <link rel="stylesheet" href="/admin/layout.css" />
+  </head>
+  <body data-required-permission="admin.tools.page.assets.read">
+    <div class="admin-shell">
+      <aside class="sidebar">
+        <h2>管理后台</h2>
+        <a href="/admin/index.html">总览</a>
+        <a href="/admin/runtime.html">运行诊断</a>
+        <a href="/admin/employees.html">员工管理</a>
+        <a href="/admin/skills.html">技能管理</a>
+        <a class="active" href="/admin/tools.html">工具管理</a>
+        <a href="/admin/tasks.html">任务台账</a>
+        <a href="/admin/logs.html">行为日志</a>
+        <a href="/admin/oss.html">开源检索</a>
+        <a href="/admin/auth-members.html">成员管理</a>
+        <a href="/front.html">用户工作台</a>
+      </aside>
+      <main class="content">
+        <section class="page-head">
+          <h1 class="page-title">工具资产</h1>
+          <div class="stat-strip">
+            <div class="stat-item">
+              <div class="stat-label">MCP 服务总量</div>
+              <div id="mcpTotal" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">已启用</div>
+              <div id="mcpEnabled" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">已停用</div>
+              <div id="mcpDisabled" class="stat-value">0</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="toolbar">
+            <button id="createMcpBtn" type="button" class="primary" data-required-permission="admin.tools.action.create-service">新增 MCP 服务</button>
+          </div>
+          <div id="toolsStatus" class="toolbar-note" style="margin-bottom:10px;"></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>服务名称</th>
+                  <th>传输协议</th>
+                  <th>地址</th>
+                  <th>状态</th>
+                  <th>更新时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="mcpRows">
+                <tr><td colspan="6" class="empty">加载中...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <aside id="mcpEditorDrawer" class="employee-drawer hidden" aria-hidden="true">
+      <div class="employee-drawer-head">
+        <h3 id="mcpEditorTitle">新增 MCP 服务</h3>
+        <button id="closeMcpDrawerBtn" type="button">关闭</button>
+      </div>
+      <div class="employee-drawer-body">
+        <section class="edit-section">
+          <h4>服务基础信息</h4>
+          <div class="policy-grid">
+            <div>
+              <label for="mcpNameInput">服务名称</label>
+              <input id="mcpNameInput" type="text" placeholder="例如：财务桥接服务" />
+            </div>
+            <div>
+              <label for="mcpTransportInput">传输协议</label>
+              <select class="admin-select" id="mcpTransportInput">
+                <option value="http">http</option>
+                <option value="stdio">stdio</option>
+                <option value="ws">ws</option>
+              </select>
+            </div>
+            <div style="grid-column:1 / span 2;">
+              <label for="mcpEndpointInput">服务地址</label>
+              <input id="mcpEndpointInput" type="text" placeholder="例如：http://127.0.0.1:8092/mcp" />
+            </div>
+            <div style="grid-column:1 / span 2;">
+              <label for="mcpDescriptionInput">描述</label>
+              <input id="mcpDescriptionInput" type="text" placeholder="服务用途说明" />
+            </div>
+          </div>
+        </section>
+        <section class="edit-section">
+          <h4>状态配置</h4>
+          <label><input id="mcpEnabledInput" type="checkbox" checked /> 启用</label>
+        </section>
+        <div class="employee-edit-actions" style="justify-content:flex-start;gap:8px;">
+          <button id="mcpSaveBtn" type="button" class="primary" data-required-permission="admin.tools.assets.write">保存</button>
+          <button id="mcpCancelBtn" type="button">取消</button>
+        </div>
+      </div>
+    </aside>
+    <div id="mcpDrawerMask" class="employee-drawer-mask hidden" aria-hidden="true"></div>
+    <div style="display:none;" aria-hidden="true">
+      <div id="pendingRows"></div>
+      <div id="retrievalMetrics"></div>
+      <select class="admin-select" id="retrievalModeSelect"></select>
+      <button id="saveRetrievalModeBtn" type="button"></button>
+    </div>
+
+    <script src="/admin/auth.js"></script>
+    <script src="/admin/tools.js"></script>
+  </body>
+</html>

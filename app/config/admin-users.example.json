@@ -1,0 +1,30 @@
+[
+  {
+    "id": "u-root-1",
+    "username": "root_owner",
+    "displayName": "平台管理员",
+    "role": "super_admin",
+    "passwordHash": "请使用 scripts/hash-admin-password.js 生成"
+  },
+  {
+    "id": "u-ops-1",
+    "username": "ops_lead",
+    "displayName": "运营负责人",
+    "role": "ops_admin",
+    "passwordHash": "请使用 scripts/hash-admin-password.js 生成"
+  },
+  {
+    "id": "u-audit-1",
+    "username": "audit_lead",
+    "displayName": "审计员",
+    "role": "auditor",
+    "passwordHash": "请使用 scripts/hash-admin-password.js 生成"
+  },
+  {
+    "id": "u-skill-1",
+    "username": "skill_owner",
+    "displayName": "技能管理员",
+    "role": "skill_admin",
+    "passwordHash": "请使用 scripts/hash-admin-password.js 生成"
+  }
+]

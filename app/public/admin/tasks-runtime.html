@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>任务运行台账</title>
+    <link rel="stylesheet" href="/admin/layout.css" />
+    <style>
+      /* tasks-runtime: 14-column table column sizing */
+      .tasks-runtime-table th,
+      .tasks-runtime-table td { white-space: nowrap; }
+      .tasks-runtime-table th:nth-child(4),
+      .tasks-runtime-table td:nth-child(4) {
+        white-space: normal;
+        min-width: 180px;
+        max-width: 300px;
+        word-break: break-all;
+      }
+      .tasks-runtime-table th:nth-child(13),
+      .tasks-runtime-table td:nth-child(13) {
+        white-space: normal;
+        min-width: 120px;
+        max-width: 260px;
+      }
+    </style>
+  </head>
+  <body data-required-permission="admin.tasks.page.runtime.read">
+    <div class="admin-shell">
+      <aside class="sidebar">
+        <h2>管理后台</h2>
+        <a href="/front.html">用户工作台</a>
+      </aside>
+      <main class="content">
+        <section class="page-head">
+          <h1 class="page-title">任务运行台账</h1>
+          <p class="page-subtitle">按“任务从谁发起、当前进度、系统如何执行”展示全过程记录，便于业务同学快速判断是否正常执行。</p>
+          <div class="stat-strip">
+            <div class="stat-item">
+              <div class="stat-label">已接入执行引擎任务数</div>
+              <div id="runtimeBoundCount" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">累计执行事件数</div>
+              <div id="runtimeEventCount" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">参与执行的智能体数</div>
+              <div id="agentCount" class="stat-value">0</div>
+            </div>
+          </div>
+        </section>
+        <section class="card">
+          <div class="toolbar filter-toolbar">
+            <div class="toolbar-group">
+              <label for="filterSkillTrigger">技能检索触发场景</label>
+              <select class="admin-select" id="filterSkillTrigger">
+                <option value="all">全部场景</option>
+                <option value="correction">纠错后触发</option>
+                <option value="failure">执行失败后触发</option>
+                <option value="none">未触发技能检索</option>
+              </select>
+            </div>
+            <div class="toolbar-group">
+              <label for="filterFindSkills">是否走精准检索</label>
+              <select class="admin-select" id="filterFindSkills">
+                <option value="all">全部</option>
+                <option value="yes">是（find-skills）</option>
+                <option value="no">否（通用检索）</option>
+              </select>
+            </div>
+          </div>
+          <p class="toolbar-note">说明：执行事件数越高，表示该任务执行过程越复杂；“精准检索”代表系统按关键词查找更贴近的技能方案。</p>
+          <div class="table-wrap">
+            <table class="tasks-runtime-table">
+              <thead>
+                <tr>
+                  <th>任务编号</th>
+                  <th>Trace ID</th>
+                  <th>执行人</th>
+                  <th>任务目标</th>
+                  <th>当前进度</th>
+                  <th>风险等级</th>
+                  <th>引擎任务号</th>
+                  <th>执行来源</th>
+                  <th>执行智能体</th>
+                  <th>最近事件时间</th>
+                  <th>执行耗时</th>
+                  <th>异常信号</th>
+                  <th>技能检索摘要</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="rows">
+                <tr><td colspan="14" class="empty">加载中...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="/admin/auth.js"></script>
+    <script src="/admin/tasks-runtime.js"></script>
+  </body>
+</html>

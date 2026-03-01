@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>管理后台登录</title>
+    <style>
+      * { box-sizing: border-box; }
+      :root {
+        --bg-1: #f7fbff;
+        --bg-2: #eef6ff;
+        --line: #d9e8fb;
+        --text-1: #102341;
+        --text-2: #5c6f90;
+        --brand-1: #2f75ff;
+        --brand-2: #1f57d6;
+        --accent-1: #2f75ff;
+      }
+      body {
+        margin: 0;
+        color: var(--text-1);
+        min-height: 100dvh;
+        font-family: "IBM Plex Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+        background:
+          radial-gradient(960px 460px at -10% -10%, #d5e6ff 0%, transparent 65%),
+          radial-gradient(900px 460px at 112% -6%, #dffbf2 0%, transparent 64%),
+          linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+      }
+      .wrap { min-height: 100dvh; display: grid; place-items: center; padding: 24px; }
+      .shell {
+        width: 100%;
+        max-width: 980px;
+        display: grid;
+        grid-template-columns: 1.15fr 1fr;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 20px 52px rgba(35, 73, 138, 0.16);
+        backdrop-filter: blur(10px);
+      }
+      .hero {
+        padding: 36px 34px;
+        background:
+          radial-gradient(420px 250px at 20% 10%, rgba(103, 162, 255, 0.32) 0%, transparent 68%),
+          radial-gradient(360px 250px at 92% 90%, rgba(90, 223, 180, 0.24) 0%, transparent 72%),
+          linear-gradient(180deg, #f6fbff 0%, #edf5ff 100%);
+        border-right: 1px solid #deebfb;
+      }
+      .brand-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .brand-logo-wrap {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        background: #e6eefb;
+        border: 1px solid #cadef8;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+      .brand-logo-fallback {
+        font-size: 13px;
+        color: #38598b;
+        font-weight: 700;
+      }
+      .brand-meta {
+        display: grid;
+      }
+      .brand-meta strong {
+        font-size: 14px;
+      }
+      .brand-meta small {
+        color: #6a7e9f;
+        font-size: 12px;
+      }
+      .hero h2 { margin: 0 0 10px; font-size: 28px; letter-spacing: .3px; }
+      .hero p { margin: 0; color: var(--text-2); font-size: 14px; line-height: 1.7; }
+      .chips { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; }
+      .chip {
+        padding: 6px 12px;
+        border-radius: 999px;
+        border: 1px solid #cfdef4;
+        background: #ffffff;
+        font-size: 12px;
+        color: #3a5078;
+      }
+      .scene {
+        margin-top: 24px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid #d9e7fa;
+        padding: 14px;
+      }
+      .scene .title { font-size: 12px; color: #5d74a4; letter-spacing: 0.5px; }
+      .scene ul { margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+      .scene li { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #3a4f77; }
+      .dot { width: 8px; height: 8px; border-radius: 999px; background: linear-gradient(180deg, #35d0a4, #16b089); }
+      .card { width: 100%; max-width: 480px; background: #fff; padding: 34px 30px; }
+      h1 { margin: 0 0 8px; font-size: 28px; line-height: 1.15; }
+      p { margin: 0 0 18px; color: var(--text-2); font-size: 14px; }
+      .login-tabs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border: 1px solid #d7e5f9;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 14px;
+      }
+      .login-tab {
+        margin: 0;
+        width: 100%;
+        border: 0;
+        border-radius: 0;
+        background: #f5f9ff;
+        color: #35517d;
+        padding: 10px 12px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .login-tab.active {
+        background: #fff;
+        color: var(--text-1);
+        box-shadow: inset 0 -2px 0 var(--accent-1);
+        font-weight: 600;
+      }
+      .panel.hidden { display: none; }
+      label { display: block; margin: 14px 0 6px; font-size: 13px; color: #38507d; }
+      input {
+        width: 100%;
+        border: 1px solid #d3e1f6;
+        border-radius: 12px;
+        padding: 12px 12px;
+        font-size: 14px;
+        transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+        background: #fbfdff;
+      }
+      input:focus {
+        outline: none;
+        border-color: #73a2ff;
+        box-shadow: 0 0 0 3px rgba(79, 143, 255, 0.2);
+        transform: translateY(-1px);
+      }
+      .primary-btn, .ghost-btn {
+        margin-top: 16px;
+        width: 100%;
+        border-radius: 12px;
+        padding: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+        cursor: pointer;
+        transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
+      }
+      .primary-btn {
+        border: 1px solid #2b65cc;
+        background: linear-gradient(180deg, var(--brand-1) 0%, var(--brand-2) 100%);
+        color: #fff;
+      }
+      .ghost-btn {
+        border: 1px solid #d0def3;
+        background: #f3f7ff;
+        color: #29476f;
+      }
+      .primary-btn:hover, .ghost-btn:hover { filter: brightness(1.03); transform: translateY(-1px); }
+      .primary-btn[disabled], .ghost-btn[disabled] { opacity: 0.6; cursor: not-allowed; transform: none; filter: none; }
+      .capabilities { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+      .cap {
+        border: 1px solid #d4e2f7;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 11px;
+        color: #486084;
+        background: #f7fbff;
+      }
+      .hint {
+        margin-top: 16px;
+        font-size: 12px;
+        color: #55709d;
+        line-height: 1.7;
+        background: #f7faff;
+        border: 1px solid #d9e7fb;
+        border-radius: 12px;
+        padding: 10px 12px;
+      }
+      .error { margin-top: 8px; min-height: 18px; font-size: 13px; color: #8a1f1f; font-weight: 500; }
+      @media (max-width: 900px) {
+        .shell { grid-template-columns: 1fr; max-width: 520px; }
+        .hero { border-right: 0; border-bottom: 1px solid #e2eaf7; padding: 22px 20px 18px; }
+        .hero h2 { font-size: 24px; }
+        .card { padding: 24px 20px 22px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="shell">
+        <section class="hero">
+          <div class="brand-head">
+            <div class="brand-logo-wrap">
+              <span class="brand-logo-fallback">DCF</span>
+            </div>
+            <div class="brand-meta">
+              <strong>Digital Crew Factory</strong>
+              <small>Enterprise User Workspace</small>
+            </div>
+          </div>
+          <h2>欢迎进入数字员工管理中枢</h2>
+          <p>覆盖任务治理、技能沉淀、运行监控与审计追踪，确保数字员工体系稳定、安全、可持续运营。</p>
+          <div class="chips">
+            <span class="chip">任务治理与审批</span>
+            <span class="chip">回滚与补偿保障</span>
+            <span class="chip">技能资产沉淀</span>
+            <span class="chip">全链路审计留痕</span>
+          </div>
+          <div class="scene">
+            <div class="title">DIGITAL CREW GOVERNANCE CENTER</div>
+            <ul>
+              <li><span class="dot"></span>统一入口管理组织内数字员工生命周期</li>
+              <li><span class="dot"></span>高风险动作受审批与策略约束，异常可快速回滚</li>
+              <li><span class="dot"></span>运行状态与操作记录可追溯、可复盘、可审计</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="card">
+          <h1>登录</h1>
+          <div class="login-tabs">
+            <button type="button" id="tabBridge" class="login-tab active">桥接登录</button>
+            <button type="button" id="tabAuthorize" class="login-tab">企业授权</button>
+          </div>
+
+          <form id="bridgeLoginForm" class="panel">
+            <label for="username">账号</label>
+            <input id="username" name="username" required />
+            <label for="password">密码</label>
+            <input id="password" name="password" type="password" />
+            <label for="ssoBridgeToken">SSO Bridge Token（桥接模式）</label>
+            <input id="ssoBridgeToken" name="ssoBridgeToken" />
+            <button id="bridgeLoginBtn" class="primary-btn" type="submit">登录</button>
+          </form>
+          <div id="authorizePanel" class="panel hidden">
+            <p style="margin-bottom:10px;">将跳转至企业统一身份平台完成认证，认证成功后返回管理后台。</p>
+            <button id="ssoAuthorizeBtn" class="ghost-btn" type="button">跳转企业 SSO 授权页</button>
+          </div>
+
+          <div id="ssoCapabilities" class="capabilities"></div>
+          <div id="error" class="error"></div>
+          <div class="hint">
+            测试阶段推荐：账号密码登录。<br />
+            如需桥接 SSO，可仅填写账号 + SSO Bridge Token。<br />
+            示例：admin / admin123
+          </div>
+        </section>
+      </div>
+    </div>
+    <script src="/admin/login.js"></script>
+  </body>
+</html>

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>运行总览</title>
+    <link rel="stylesheet" href="/admin/layout.css" />
+  </head>
+  <body data-required-permission="admin.runtime.page.overview.read">
+    <div class="admin-shell">
+      <aside class="sidebar">
+        <h2>管理后台</h2>
+        <a href="/front.html">用户工作台</a>
+      </aside>
+      <main class="content">
+        <section class="page-head">
+          <h1 class="page-title">运行总览</h1>
+          <p class="page-subtitle">一个页面完成“是否健康、能否自动推进、是否需要人工介入”的核心判断。</p>
+          <div class="stat-strip">
+            <div class="stat-item">
+              <div class="stat-label">运行阶段</div>
+              <div id="phaseValue" class="stat-value">-</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">诊断周期</div>
+              <div id="cycleValue" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">人工介入</div>
+              <div id="manualValue" class="stat-value">-</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="section-overview">
+          <div class="section-head">
+            <h3>运行快照</h3>
+            <p class="section-note">自动刷新：每 3 秒</p>
+          </div>
+          <div id="bootstrapSummary" class="overview-kpis"></div>
+        </section>
+
+        <section class="card" id="section-health">
+          <div class="section-head">
+            <h3>健康判断</h3>
+            <p id="healthUpdatedAt" class="section-note">更新时间：-</p>
+          </div>
+          <div class="diagnosis-hero">
+            <span id="healthBadge" class="badge warn">评估中</span>
+            <p id="healthSummary" class="hero-summary">正在汇总运行状态...</p>
+            <p id="healthAction" class="hero-action">建议动作：等待最新数据。</p>
+          </div>
+          <div class="insight-list-wrap">
+            <h4>风险提示</h4>
+            <ul id="healthRiskList" class="insight-list">
+              <li>正在加载风险明细...</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="card" id="section-cycle">
+          <div class="section-head">
+            <h3>周期推进判断</h3>
+            <p id="cycleUpdatedAt" class="section-note">更新时间：-</p>
+          </div>
+          <div class="diagnosis-hero">
+            <span id="cycleDecisionBadge" class="badge warn">评估中</span>
+            <p id="cycleDecisionSummary" class="hero-summary">正在分析本周期判定...</p>
+            <p id="cycleDecisionReason" class="hero-action">主因：-</p>
+            <p id="cycleDecisionAction" class="hero-action">建议动作：-</p>
+          </div>
+          <div class="insight-list-wrap">
+            <h4>未通过项</h4>
+            <ul id="cycleFailedChecks" class="insight-list">
+              <li>正在分析门槛检查项...</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="card" id="section-advanced">
+          <div class="section-head">
+            <h3>诊断解读</h3>
+            <p id="advancedUpdatedAt" class="section-note">更新时间：-</p>
+          </div>
+          <div class="insight-grid">
+            <div class="insight-item"><span>运行健康</span><strong id="advRuntimeHealth">-</strong></div>
+            <div class="insight-item"><span>队列压力</span><strong id="advQueuePressure">-</strong></div>
+            <div class="insight-item"><span>阶段解读</span><strong id="advPhaseExplain">-</strong></div>
+            <div class="insight-item"><span>人工介入建议</span><strong id="advManualExplain">-</strong></div>
+            <div class="insight-item"><span>执行引擎解读</span><strong id="advEngineExplain">-</strong></div>
+            <div class="insight-item"><span>策略风险</span><strong id="advPolicyRisk">-</strong></div>
+          </div>
+          <div class="policy-actions">
+            <button id="toggleTechnicalDetailsBtn" type="button">查看技术快照（只读）</button>
+          </div>
+          <section id="advancedTechnicalPanel" class="card hidden">
+            <div class="section-head">
+              <h3>技术详情（只读）</h3>
+              <button id="hideTechnicalDetailsBtn" type="button" class="btn-link">收起</button>
+            </div>
+            <p class="section-note">以下内容仅用于排障证据查看，不参与页面主判定。</p>
+            <div class="details-stack">
+              <details>
+                <summary>Runtime 原始 JSON</summary>
+                <pre id="runtimeJson" class="mono">加载中...</pre>
+              </details>
+              <details>
+                <summary>Bootstrap 原始 JSON</summary>
+                <pre id="bootstrapJson" class="mono">加载中...</pre>
+              </details>
+              <details>
+                <summary>Framework 原始 JSON</summary>
+                <pre id="frameworkJson" class="mono">加载中...</pre>
+              </details>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+    <script src="/admin/auth.js"></script>
+    <script src="/admin/runtime.js"></script>
+  </body>
+</html>

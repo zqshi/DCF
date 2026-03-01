@@ -1,0 +1,10 @@
+{
+  "version": "v1",
+  "routes": [
+    { "method": "GET", "path": "/api/v1/health" },
+    { "method": "GET", "path": "/api/v1/framework" },
+    { "method": "GET", "path": "/api/v1/metrics" },
+    { "method": "GET", "path": "/api/v1/skills" },
+    { "method": "GET", "path": "/api/v1/skills/find?q=skills" }
+  ]
+}

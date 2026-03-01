@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>账号权限-用户管理</title>
+    <link rel="stylesheet" href="/admin/layout.css" />
+  </head>
+  <body data-required-permission="admin.auth.page.users.read">
+    <div class="admin-shell">
+      <aside class="sidebar">
+        <h2>管理后台</h2>
+        <a href="/admin/index.html">总览</a>
+        <a href="/admin/runtime.html">运行诊断</a>
+        <a href="/admin/employees.html">员工管理</a>
+        <a href="/admin/skills.html">技能管理</a>
+        <a href="/admin/tasks.html">任务台账</a>
+        <a href="/admin/logs.html">行为日志</a>
+        <a href="/admin/oss.html">开源检索</a>
+        <a class="active" href="/admin/auth-users.html">用户管理</a>
+        <a href="/front.html">用户工作台</a>
+      </aside>
+      <main class="content">
+        <section class="page-head">
+          <h1 class="page-title">账号权限-用户管理</h1>
+          <p class="page-subtitle">采用 RBAC 权限模型：用户继承角色权限，角色定义权限集合。</p>
+          <div class="stat-strip">
+            <div class="stat-item">
+              <div class="stat-label">账号总数</div>
+              <div id="userCount" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">启用账号</div>
+              <div id="activeCount" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">角色总数</div>
+              <div id="roleCount" class="stat-value">0</div>
+            </div>
+          </div>
+        </section>
+
+        <section id="usersPanel" class="card" data-auth-panel="users">
+          <div class="toolbar">
+            <div class="role-create-actions">
+              <button id="openCreateUserDrawerBtn" type="button" class="primary" data-required-permission="admin.auth.write">添加</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>用户标识</th>
+                  <th>姓名</th>
+                  <th>角色</th>
+                  <th>登录授权</th>
+                  <th>权限模型</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="authUserRows">
+                <tr><td colspan="6" class="empty">加载中...</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <pre id="authNotice" class="mono hidden"></pre>
+        </section>
+
+        <div id="userEditDrawerMask" class="role-create-drawer-mask hidden"></div>
+        <aside id="userEditDrawer" class="role-create-drawer hidden" aria-hidden="true">
+          <div class="role-create-drawer-head">
+            <h3 id="userEditPanelTitle">编辑</h3>
+            <button id="closeUserEditDrawerBtn" type="button">关闭</button>
+          </div>
+          <div class="role-create-drawer-body">
+            <div class="auth-user-form auth-user-drawer-form">
+              <div>
+                <label for="editUsername">用户标识</label>
+                <input id="editUsername" type="text" disabled />
+              </div>
+              <div>
+                <label for="editDisplayName">姓名</label>
+                <input id="editDisplayName" type="text" disabled />
+              </div>
+              <div>
+                <label for="editUserRole">角色</label>
+                <select class="admin-select" id="editUserRole"></select>
+              </div>
+            </div>
+          </div>
+          <div class="role-create-drawer-actions">
+            <button id="cancelUserEditBtn" type="button">取消</button>
+            <button id="saveUserEditBtn" type="button" class="primary" data-required-permission="admin.auth.write">保存授权</button>
+          </div>
+        </aside>
+
+        <div id="userDeleteConfirmModal" class="skill-modal hidden">
+          <div class="skill-modal-panel" style="max-width:520px;">
+            <div class="skill-modal-head">
+              <h3>删除确认</h3>
+              <button id="closeUserDeleteConfirmBtn" type="button">关闭</button>
+            </div>
+            <p id="userDeleteConfirmText" class="toolbar-note">确认删除该账号？</p>
+            <div class="role-create-drawer-actions" style="padding:12px 0 0;border-top:none;">
+              <button id="cancelUserDeleteConfirmBtn" type="button">取消</button>
+              <button id="confirmUserDeleteBtn" type="button" class="primary" data-required-permission="admin.auth.write">确认删除</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="createUserDrawerMask" class="role-create-drawer-mask hidden"></div>
+        <aside id="createUserDrawer" class="role-create-drawer hidden" aria-hidden="true">
+          <div class="role-create-drawer-head">
+            <h3>添加</h3>
+            <button id="closeCreateUserDrawerBtn" type="button">关闭</button>
+          </div>
+          <div class="role-create-drawer-body">
+            <div class="auth-user-form auth-user-drawer-form">
+              <div>
+                <label for="newUsername">用户标识</label>
+                <input id="newUsername" type="text" readonly disabled placeholder="系统自动生成，无需填写" />
+              </div>
+              <div>
+                <label for="newDisplayName">姓名</label>
+                <input id="newDisplayName" type="text" placeholder="请输入 2-20 个字符" />
+              </div>
+              <div>
+                <label for="newRole">角色</label>
+                <select class="admin-select" id="newRole"></select>
+              </div>
+            </div>
+          </div>
+          <div class="role-create-drawer-actions">
+            <button id="cancelCreateUserDrawerBtn" type="button">取消</button>
+            <button id="createUserBtn" type="button" class="primary" data-required-permission="admin.auth.write">添加</button>
+          </div>
+        </aside>
+
+        <div id="authToast" class="admin-toast hidden" role="status" aria-live="polite"></div>
+      </main>
+    </div>
+    <script src="/admin/auth.js"></script>
+    <script src="/admin/auth-members.js"></script>
+  </body>
+</html>

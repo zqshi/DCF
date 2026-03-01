@@ -1,0 +1,19 @@
+{
+  "knowledgeBases": [
+    {
+      "id": "kb-1772158546585-bae01c",
+      "name": "DCF Local KB",
+      "description": "local only",
+      "createdAt": "2026-02-27T02:15:46.585Z",
+      "updatedAt": "2026-02-27T02:15:46.585Z"
+    },
+    {
+      "id": "kb-1772005182080-f5d3a5",
+      "name": "DCF Local KB",
+      "description": "local only",
+      "createdAt": "2026-02-25T07:39:42.080Z",
+      "updatedAt": "2026-02-25T07:39:42.080Z"
+    }
+  ],
+  "docs": []
+}

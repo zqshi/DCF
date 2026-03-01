@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>员工管理</title>
+    <link rel="stylesheet" href="/admin/layout.css" />
+  </head>
+  <body data-required-permission="admin.employees.page.overview.read">
+    <div class="admin-shell">
+      <aside class="sidebar">
+        <h2>管理后台</h2>
+        <a href="/admin/index.html">总览</a>
+        <a href="/admin/runtime.html">运行诊断</a>
+        <a class="active" href="/admin/employees.html">员工管理</a>
+        <a href="/admin/skills.html">技能管理</a>
+        <a href="/admin/tasks.html">任务台账</a>
+        <a href="/admin/logs.html">行为日志</a>
+        <a href="/admin/oss.html">开源检索</a>
+        <a href="/admin/auth-members.html">成员管理</a>
+        <a href="/front.html">用户工作台</a>
+      </aside>
+      <main class="content">
+        <section class="page-head">
+          <div class="page-head-layout">
+            <div>
+              <h1 class="page-title">员工总览</h1>
+              <div class="stat-strip">
+                <div class="stat-item">
+                  <div class="stat-label">员工总数</div>
+                  <div id="employeeCount" class="stat-value">0</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">组织覆盖</div>
+                  <div id="departmentCount" class="stat-value">0 个部门</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">详情面板</div>
+                  <div class="stat-value">实时联动</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <h3>员工列表</h3>
+          </div>
+          <div class="toolbar filter-toolbar">
+            <div class="toolbar-group">
+              <label for="employeeKeyword">员工搜索</label>
+              <input class="admin-input" id="employeeKeyword" type="text" placeholder="按工号/姓名/邮箱搜索" />
+            </div>
+            <div class="toolbar-group">
+              <label for="departmentFilter">部门</label>
+              <select class="admin-select" id="departmentFilter">
+                <option value="">全部部门</option>
+              </select>
+            </div>
+            <div class="toolbar-group">
+              <label for="roleFilter">岗位</label>
+              <select class="admin-select" id="roleFilter">
+                <option value="">全部岗位</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>工号</th>
+                  <th>姓名</th>
+                  <th>邮箱</th>
+                  <th>部门</th>
+                  <th>岗位</th>
+                  <th>岗位合同</th>
+                  <th>员工成长</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="rows">
+                <tr><td colspan="8" class="empty">加载中...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </main>
+    </div>
+    <aside id="topicDetailDrawer" class="employee-drawer hidden" aria-hidden="true">
+      <div class="employee-drawer-head">
+        <h3 id="topicDrawerTitle">专题详情</h3>
+        <button id="closeTopicDrawer" type="button">关闭</button>
+      </div>
+      <div id="topicDrawerBody" class="employee-drawer-body">
+        <div class="empty">请选择专题查看详情</div>
+      </div>
+    </aside>
+    <div id="topicDrawerMask" class="employee-drawer-mask hidden" aria-hidden="true"></div>
+    <aside id="employeeDetailDrawer" class="employee-drawer hidden" aria-hidden="true">
+      <div class="employee-drawer-head">
+        <h3 id="employeeDrawerTitle">员工详情</h3>
+        <button id="closeEmployeeDrawer" type="button">关闭</button>
+      </div>
+      <div id="employeeDrawerBody" class="employee-drawer-body">
+        <div class="empty">请选择员工查看详情</div>
+      </div>
+      <div id="employeeDrawerEditor" class="employee-drawer-editor hidden">
+        <section class="edit-section">
+          <h4>固定信息（只读）</h4>
+          <div class="overview-kpis" id="editReadonlyMeta"></div>
+        </section>
+
+        <section class="edit-section">
+          <h4>基础设置</h4>
+          <div class="policy-grid">
+            <div>
+              <label for="editName">员工名称</label>
+              <input id="editName" type="text" />
+            </div>
+            <div>
+              <label for="editDepartment">归属部门</label>
+              <input id="editDepartment" type="text" />
+            </div>
+            <div>
+              <label for="editRole">岗位角色</label>
+              <input id="editRole" type="text" />
+            </div>
+            <div>
+              <label for="editRiskLevel">默认风险等级</label>
+              <select class="admin-select" id="editRiskLevel">
+                <option value="L1">L1（低风险，自动放行）</option>
+                <option value="L2">L2（一般风险，自动放行）</option>
+                <option value="L3">L3（较高风险，自动放行）</option>
+                <option value="L4">L4（敏感风险，需审批）</option>
+              </select>
+            </div>
+            <div>
+              <label for="editStatus">运行状态</label>
+              <select class="admin-select" id="editStatus">
+                <option value="active">active（运行中）</option>
+                <option value="paused">paused（暂停）</option>
+                <option value="inactive">inactive（停用）</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section class="edit-section">
+          <h4>Runtime 配置</h4>
+          <div class="policy-grid">
+            <div>
+              <label for="editRuntimeAgentId">Agent ID</label>
+              <input id="editRuntimeAgentId" type="text" readonly disabled aria-readonly="true" />
+            </div>
+            <div>
+              <label for="editRuntimeSystemPrompt">System Prompt</label>
+              <textarea id="editRuntimeSystemPrompt" class="policy-editor policy-editor-sm"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section class="edit-section">
+          <div class="edit-section-head">
+            <h4>岗位合同与治理边界</h4>
+            <button id="optimizePolicyForLlm" type="button" data-required-permission="admin.employees.write">大模型理解优化</button>
+          </div>
+          <div class="policy-grid">
+            <div>
+              <label for="jobAllowList">职责范围（每行一项）</label>
+              <textarea id="jobAllowList" class="mono policy-editor policy-editor-sm"></textarea>
+              <div id="jobAllowValidation" class="policy-inline-validation hidden"></div>
+            </div>
+            <div>
+              <label for="jobDenyList">禁止边界（每行一项）</label>
+              <textarea id="jobDenyList" class="mono policy-editor policy-editor-sm"></textarea>
+              <div id="jobDenyValidation" class="policy-inline-validation hidden"></div>
+            </div>
+            <div>
+              <label for="jobKpiList">KPI目标（每行一项）</label>
+              <textarea id="jobKpiList" class="mono policy-editor policy-editor-sm"></textarea>
+              <div id="jobKpiValidation" class="policy-inline-validation hidden"></div>
+            </div>
+            <div>
+              <label for="jobEscalationRule">升级规则</label>
+              <textarea id="jobEscalationRule" class="policy-editor policy-editor-sm"></textarea>
+              <div id="jobEscalationValidation" class="policy-inline-validation hidden"></div>
+            </div>
+          </div>
+          <div style="margin-top:10px;">
+            <label for="jobShutdownRule">停机规则</label>
+            <textarea id="jobShutdownRule" class="policy-editor policy-editor-sm"></textarea>
+            <div id="jobShutdownValidation" class="policy-inline-validation hidden"></div>
+          </div>
+          <div style="margin-top:10px;">
+            <label for="jobPolicyNarrative">补充说明（自然语言）</label>
+            <textarea id="jobPolicyNarrative" class="policy-editor policy-editor-sm" placeholder="可选：描述岗位场景、优先级、例外情况，系统将整理为更利于大模型理解的结构化提示。"></textarea>
+            <div id="jobNarrativeValidation" class="policy-inline-validation hidden"></div>
+          </div>
+        </section>
+
+        <section class="edit-section">
+          <h4>审批策略（按风险等级）</h4>
+          <div class="toolbar-note">当前默认：L1-L3 自动放行（0 审批），L4 为敏感风险（默认 2 人审批且角色互异）。</div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>风险等级</th>
+                  <th>需审批人数</th>
+                  <th>可审批角色（逗号分隔）</th>
+                  <th>必须角色互异</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>L1（低风险，自动放行）</td>
+                  <td><input id="ap_l1_count" type="number" min="0" step="1" class="approval-input" /></td>
+                  <td><input id="ap_l1_roles" type="text" class="approval-input" /></td>
+                  <td><input id="ap_l1_distinct" type="checkbox" /></td>
+                </tr>
+                <tr>
+                  <td>L2（一般风险，自动放行）</td>
+                  <td><input id="ap_l2_count" type="number" min="0" step="1" class="approval-input" /></td>
+                  <td><input id="ap_l2_roles" type="text" class="approval-input" /></td>
+                  <td><input id="ap_l2_distinct" type="checkbox" /></td>
+                </tr>
+                <tr>
+                  <td>L3（较高风险，自动放行）</td>
+                  <td><input id="ap_l3_count" type="number" min="0" step="1" class="approval-input" /></td>
+                  <td><input id="ap_l3_roles" type="text" class="approval-input" /></td>
+                  <td><input id="ap_l3_distinct" type="checkbox" /></td>
+                </tr>
+                <tr>
+                  <td>L4（敏感风险，需审批）</td>
+                  <td><input id="ap_l4_count" type="number" min="0" step="1" class="approval-input" /></td>
+                  <td><input id="ap_l4_roles" type="text" class="approval-input" /></td>
+                  <td><input id="ap_l4_distinct" type="checkbox" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section class="edit-section">
+          <div class="toolbar-note">边界检查结果会在保存前自动校验并提示。</div>
+        </section>
+        <pre id="policyResult" class="mono hidden"></pre>
+        <div class="employee-edit-actions">
+          <button id="saveEmployeeEdit" type="button" class="primary" data-required-permission="admin.employees.write">保存变更</button>
+        </div>
+      </div>
+    </aside>
+    <div id="employeeDrawerMask" class="employee-drawer-mask hidden" aria-hidden="true"></div>
+    <script src="/admin/auth.js"></script>
+    <script src="/admin/employees.js"></script>
+  </body>
+</html>

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>账号权限-角色管理</title>
+    <link rel="stylesheet" href="/admin/layout.css" />
+  </head>
+  <body data-required-permission="admin.auth.page.roles.read">
+    <div class="admin-shell">
+      <aside class="sidebar">
+        <h2>管理后台</h2>
+        <a href="/admin/index.html">总览</a>
+        <a href="/admin/runtime.html">运行诊断</a>
+        <a href="/admin/employees.html">员工管理</a>
+        <a href="/admin/skills.html">技能管理</a>
+        <a href="/admin/tasks.html">任务台账</a>
+        <a href="/admin/logs.html">行为日志</a>
+        <a href="/admin/oss.html">开源检索</a>
+        <a class="active" href="/admin/auth-roles.html">角色管理</a>
+        <a href="/front.html">用户工作台</a>
+      </aside>
+      <main class="content">
+        <section class="page-head">
+          <h1 class="page-title">账号权限-角色管理</h1>
+          <p class="page-subtitle">维护角色权限集合，支撑账号授权继承与治理边界控制。</p>
+          <div class="stat-strip">
+            <div class="stat-item">
+              <div class="stat-label">角色总数</div>
+              <div id="roleCount" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">系统角色</div>
+              <div id="systemRoleCount" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">自定义角色</div>
+              <div id="customRoleCount" class="stat-value">0</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="toolbar">
+            <div class="row-actions">
+              <button id="openCreateRoleDrawerBtn" type="button" class="primary" data-required-permission="admin.auth.write">创建角色</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>角色</th>
+                  <th>成员数</th>
+                  <th>权限集合</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="authRoleRows">
+                <tr><td colspan="4" class="empty">加载中...</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <pre id="roleNotice" class="mono hidden"></pre>
+        </section>
+
+        <div id="roleCreateDrawerMask" class="role-create-drawer-mask hidden"></div>
+        <aside id="roleCreateDrawer" class="role-create-drawer role-permission-drawer hidden" aria-hidden="true">
+          <div class="role-create-drawer-head">
+            <h3>创建角色</h3>
+            <button id="closeCreateRoleDrawerBtn" type="button">关闭</button>
+          </div>
+          <div class="role-create-drawer-body">
+            <div class="auth-user-form role-create-form">
+              <div>
+                <label for="newRoleName">角色编码</label>
+                <input id="newRoleName" type="text" placeholder="例如：ops_observer" />
+              </div>
+              <div>
+                <label>权限矩阵（页面/接口/按钮）</label>
+                <div id="createRolePermissionList" class="permission-matrix"></div>
+              </div>
+            </div>
+          </div>
+          <div class="role-create-drawer-actions">
+            <button id="cancelCreateRoleDrawerBtn" type="button">取消</button>
+            <button id="createRoleBtn" type="button" class="primary" data-required-permission="admin.auth.write">创建角色</button>
+          </div>
+        </aside>
+
+        <div id="roleEditDrawerMask" class="role-create-drawer-mask hidden"></div>
+        <aside id="roleEditDrawer" class="role-create-drawer role-permission-drawer hidden" aria-hidden="true">
+          <div class="role-create-drawer-head">
+            <h3>编辑角色权限</h3>
+            <button id="closeRoleEditDrawerBtn" type="button">关闭</button>
+          </div>
+          <div class="role-create-drawer-body">
+            <div class="auth-user-form role-create-form">
+              <div>
+                <label for="editRoleName">角色编码</label>
+                <input id="editRoleName" type="text" readonly />
+              </div>
+              <div>
+                <label>权限矩阵（页面/接口/按钮）</label>
+                <div id="editRolePermissionList" class="permission-matrix"></div>
+              </div>
+            </div>
+          </div>
+          <div class="role-create-drawer-actions">
+            <button id="cancelRoleEditBtn" type="button">取消</button>
+            <button id="saveRoleEditBtn" type="button" class="primary" data-required-permission="admin.auth.write">保存权限</button>
+          </div>
+        </aside>
+      </main>
+    </div>
+    <script src="/admin/auth.js"></script>
+    <script src="/admin/auth-roles.js"></script>
+  </body>
+</html>

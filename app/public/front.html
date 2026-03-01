@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>员工工作台</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="front-stage">
+    <div class="workbench">
+      <aside class="left-rail">
+        <div class="rail-head">
+          <div>
+            <h1>员工</h1>
+            <p>对话执行台</p>
+          </div>
+          <button id="newThreadBtn" type="button" class="ghost">新会话</button>
+        </div>
+        <div class="rail-filter">
+          <label for="employeeSelect">执行者</label>
+          <select id="employeeSelect" name="employeeId" required></select>
+        </div>
+        <div id="threadList" class="thread-list"></div>
+        <div class="rail-actions">
+          <button id="openCreateEmployee" type="button">创建员工</button>
+          <button id="openKnowledgeHub" type="button" class="ghost">知识库入口</button>
+        </div>
+        <div class="rail-account">
+          <a id="frontAdminEntry" class="fs-link hidden" href="/admin/index.html" target="_blank" rel="noopener noreferrer">管理后台</a>
+          <div class="front-user-card">
+            <button id="frontUserToggle" type="button" class="front-user-toggle" aria-expanded="false">
+              <div id="frontUserAvatar" class="front-user-avatar" aria-hidden="true">?</div>
+              <div class="front-user-meta">
+                <strong id="frontUserAccount">未登录</strong>
+                <small id="frontUserName">请先登录</small>
+              </div>
+            </button>
+            <button id="frontSettingsBtn" type="button" class="ghost hidden">设置</button>
+            <button id="frontLogoutBtn" type="button" class="ghost hidden">退出登录</button>
+          </div>
+        </div>
+      </aside>
+
+      <main class="center-chat">
+        <header class="chat-head">
+          <div class="chat-head-title">
+            <h2 id="conversationTitle">新会话</h2>
+            <span class="mode-badge">执行优先模式</span>
+          </div>
+          <p>像和同事聊天一样下发任务，员工将持续在当前会话中回复</p>
+        </header>
+        <section id="chat" class="chat-list"></section>
+        <footer class="composer-shell">
+          <div class="composer-tools">
+            <button id="toggleAdvancedConfig" type="button" class="ghost">高级参数</button>
+            <button id="uploadAttachmentBtn" type="button" class="ghost">上传附件</button>
+            <input
+              id="attachmentInput"
+              type="file"
+              accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.png,.jpg,.jpeg,image/png,image/jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
+              multiple
+              hidden
+            />
+          </div>
+          <form id="chatForm" class="composer-form">
+            <textarea
+              id="goalInput"
+              name="goal"
+              rows="2"
+              placeholder="输入任务目标，例如：@DE-001 #L2 完成今日客服工单分类并输出风险摘要"
+              required
+            ></textarea>
+            <button type="submit">发送</button>
+          </form>
+          <div id="composerAttachments" class="composer-attachments hidden"></div>
+          <div id="advancedConfig" class="command-hints hidden" style="margin-top:8px;">
+            <select id="modelInput" name="model">
+              <option value="">处理引擎：默认</option>
+            </select>
+            <select id="thinkingLevelSelect" name="thinkingLevel">
+              <option value="minimal">思考深度：极简</option>
+              <option value="low">思考深度：低</option>
+              <option value="medium" selected>思考深度：中</option>
+              <option value="high">思考深度：高</option>
+              <option value="xhigh">思考深度：最高</option>
+            </select>
+            <select id="toolPolicySelect" name="toolPolicy">
+              <option value="balanced" selected>执行方式：平衡</option>
+              <option value="conservative">执行方式：稳健</option>
+              <option value="aggressive">执行方式：积极</option>
+            </select>
+          </div>
+          <div id="commandAssist" class="command-assist hidden"></div>
+          <p id="flash" class="flash-msg" aria-live="polite"></p>
+        </footer>
+      </main>
+
+      <aside class="right-rail">
+        <div class="rail-head">
+          <h3 id="processPanelTitle">处理过程</h3>
+          <button id="closeProcessPanel" type="button" class="ghost panel-close">×</button>
+        </div>
+        <div id="summaryCard" class="summary-card"></div>
+        <div id="knowledgeCard" class="summary-card">
+          <h4>知识沉淀</h4>
+          <div id="knowledgeList" class="activity-list"></div>
+        </div>
+        <div id="runtimeCard" class="summary-card advanced-only">
+          <h4>系统执行记录（高级）</h4>
+          <div class="command-hints">
+            <select id="runtimeTaskFilter">
+              <option value="all">事项：全部</option>
+            </select>
+            <select id="runtimeTypeFilter">
+              <option value="all">记录类型：全部</option>
+            </select>
+          </div>
+          <div id="runtimeEventMeta" class="empty-thread">等待系统记录...</div>
+          <div id="runtimeEventList" class="activity-list"></div>
+        </div>
+        <div id="activityList" class="activity-list"></div>
+      </aside>
+    </div>
+
+    <div id="employeeModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-panel">
+        <div class="modal-head">
+          <h2>创建员工</h2>
+          <button id="closeEmployeeModal" class="ghost" type="button">关闭</button>
+        </div>
+        <form id="employeeForm" class="modal-form">
+          <input name="name" placeholder="请输入员工名称（如：运营协作助理）" required />
+          <input
+            id="employeeDepartmentInput"
+            name="department"
+            placeholder="所属部门（自动取创建人部门）"
+            required
+            disabled
+          />
+          <input id="employeeRoleInput" name="role" placeholder="默认带出创建人岗位（自动补“实习生”），可修改" required />
+          <button type="submit">确认创建</button>
+        </form>
+        <p class="modal-tip">规则：每个人类员工仅可创建一名员工账号；新建后默认具备原子能力（bash、文件、检索、工具调用、测试日志）。</p>
+      </div>
+    </div>
+
+    <div id="accountSettingsModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-panel settings-panel">
+        <div class="modal-head">
+          <h2>个人设置</h2>
+          <button id="closeAccountSettingsModal" class="ghost" type="button">关闭</button>
+        </div>
+        <section class="settings-block">
+          <h3>订阅管理</h3>
+          <p class="modal-tip">用自然语言描述订阅需求，系统会自动推理规则并绑定到你创建的员工账号。</p>
+          <form id="subscriptionNlForm" class="modal-form">
+            <textarea id="subscriptionNlText" name="text" rows="3" placeholder="例如：帮我订阅 https://tisi.org/ 最新 AI 消息，每2小时推送一次简报" required></textarea>
+            <div class="subscription-form-actions">
+              <button type="submit">新增订阅</button>
+              <button id="subscriptionEditorCancel" type="button" class="ghost hidden">取消编辑</button>
+            </div>
+          </form>
+          <p id="subscriptionModalFlash" class="modal-inline-flash" aria-live="polite"></p>
+        </section>
+        <section class="settings-block">
+          <h3>订阅规则列表</h3>
+          <div id="subscriptionSettingsList" class="subscription-settings-list"></div>
+        </section>
+      </div>
+    </div>
+
+    <script src="/front-refresh-guard.js"></script>
+    <script src="/front-api-path.js"></script>
+    <script src="/front.js"></script>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "u-root-1",
+    "username": "root_owner",
+    "displayName": "平台管理员",
+    "role": "super_admin",
+    "tenantId": "tenant-default",
+    "accountId": "account-default",
+    "passwordHash": "scrypt$v1$16384$8$1$0e53b85c31c883b976d6ef170056a826$149c016a53158e6edafa7ffdb3152a40022302f5025d07f332c2974dc81ea955f9c300a9dd98e539595f481d5f8f78ff3c09dcbc3a4f9df1486ee127d5f8eebc"
+  },
+  {
+    "id": "u-ops-1",
+    "username": "ops_lead",
+    "displayName": "运营负责人",
+    "role": "ops_admin",
+    "tenantId": "tenant-default",
+    "accountId": "account-default",
+    "passwordHash": "scrypt$v1$16384$8$1$7d9114ef3c00b0156cbc2ca897de7bdd$ea0b63514f4dcfd9539f29eeb57ef932b7f8c10f5c7b1b3c105093110a51c0abc0ebce5e1be78afcf760d32a9864fb4d9269c826c112b9f1d3745d347d96bc26"
+  },
+  {
+    "id": "u-audit-1",
+    "username": "audit_lead",
+    "displayName": "审计员",
+    "role": "auditor",
+    "tenantId": "tenant-default",
+    "accountId": "account-default",
+    "passwordHash": "scrypt$v1$16384$8$1$af39a1436e3d9e205d8a5ef6b8a46213$0c04ebf7b642fcadec0bd1ffc59e0fe2f8a23dbfceedd24b0ec50bfb7e234157c9d4edbfb2a078cf615fa71b146bceac158c7edfb78db1ce7ca1bd1b771c1154"
+  },
+  {
+    "id": "u-skill-1",
+    "username": "skill_owner",
+    "displayName": "技能管理员",
+    "role": "skill_admin",
+    "tenantId": "tenant-default",
+    "accountId": "account-default",
+    "passwordHash": "scrypt$v1$16384$8$1$e2a0790d0583c69dc531f6abff827603$03aa7eea7bfe9ace2e98bb009c5e268bf7730e23e57acf1bd5883475372af281138bc98904c212a7568234ee43a0d3c2d0039e6619dfc9556289fb74cfc8e346"
+  }
+]
